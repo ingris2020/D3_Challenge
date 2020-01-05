@@ -47,8 +47,8 @@ d3.csv("data.csv").then(function(workData) {
         data.smokesLow = +data.smokesLow;
         data.smokesHigh = +data.smokesHigh;
         
-        console.log(data.abbr);
-    }); console.log(workData);
+        //console.log(data.abbr);
+    }); //console.log(workData);
 
     //Scale functions
     var xLinearScale = d3.scaleLinear()
@@ -71,31 +71,32 @@ d3.csv("data.csv").then(function(workData) {
     chartGroup.append("g")
       .call(leftAxis);
 
-    //Create Circles
-    var circlesGroup = chartGroup.selectAll("circle")
-    .data(workData)
-    .enter()
-    .append("circle")
-    .attr("cx", d => xLinearScale(d.poverty))
-    .attr("cy", d => yLinearScale(d.healthcare))
-    .attr("r", "15")
-    .attr("fill", "blue")
-    .attr("opacity", ".8")
-    
-    //Add text to circle
-    var circlesGroup = chartGroup.selectAll("text")
-    .data(workData)
-    .enter()
-    .append("text")
-    .attr("text-anchor", "middle")
-    .style("font", "10px arial")
-    .attr("x", d => xLinearScale(d.poverty))
-    .attr("y", d => yLinearScale(d.healthcare))
-    .attr("dy", ".5em")
-    .text(function(d) {return d.abbr;})
-    .attr("class", "abbr")
-    .attr("fill", "white");
+      var theCircles = svg.selectAll("g theCircles")
+      //Create Circles
+      //var circlesGroup = chartGroup.selectAll("circle")
+      .data(workData)
+      .enter();
 
+      theCircles
+      .append("circle")
+      .attr("cx", d => xLinearScale(d.poverty))
+      .attr("cy", d => yLinearScale(d.healthcare))
+      .attr("r", "15")
+      .attr("fill", "blue")
+      .attr("opacity", ".8")
+      
+     theCircles
+      .append("text")
+      .text(function(d) {return d.abbr;})
+      .attr("text-anchor", "middle")
+      .style("font", "10px arial")
+      .attr("x", d => xLinearScale(d.poverty))
+      .attr("y", d => yLinearScale(d.healthcare))
+      .attr("dy", ".5em")
+      .attr("class", "abbr")
+      .attr("fill", "white");
+
+      
     var toolTip = d3.tip()
       .attr("class", "tooltip")
       .offset([70, -60])

@@ -8,9 +8,9 @@ function makeResponsive() {
     }    
     // set the dimensions and margins of the graph
     var svgWidth = 800;
-    var svgHeight = 500;
+    var svgHeight = 580;
     
-    var margin = {top: 20, right: 40, bottom: 40, left: 50};
+    var margin = {top: 7, right: 40, bottom: 30, left: 50};
     
     var width = svgWidth - margin.left - margin.right;
     var height = svgHeight - margin.top - margin.bottom;
@@ -47,17 +47,17 @@ function makeResponsive() {
             data.smokesLow = +data.smokesLow;
             data.smokesHigh = +data.smokesHigh;
             
-            console.log(data.abbr);
-        }); console.log(workData);
+            //console.log(data.abbr);
+        }); //console.log(workData);
     
         //Scale functions
         var xLinearScale = d3.scaleLinear()
         .domain([8, d3.max(workData, d => d.poverty)])
-        .range([4, width]);
+        .range([4, width + 20]);
         
         var yLinearScale = d3.scaleLinear()
           .domain([4, d3.max(workData, d => d.healthcare)])
-          .range([height, 4]);
+          .range([height, 10]);
         
         //Axis functions
         var bottomAxis = d3.axisBottom(xLinearScale);
@@ -71,21 +71,20 @@ function makeResponsive() {
         chartGroup.append("g")
           .call(leftAxis);
         
-        var theCircles = svg.selectAll("g theCircles")
         //Create Circles
-        //var circlesGroup = chartGroup.selectAll("circle")
+        var circlesGroup = chartGroup.selectAll("circle")
         .data(workData)
-        .enter();
-
-        theCircles
+        .enter()
         .append("circle")
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
         .attr("r", "15")
         .attr("fill", "blue")
-        .attr("opacity", ".8")
+        .attr("opacity", ".8");
         
-       theCircles
+        var circlesGroup = chartGroup.selectAll("null")
+        .data(workData)
+        .enter()
         .append("text")
         .text(function(d) {return d.abbr;})
         .attr("text-anchor", "middle")
@@ -119,14 +118,14 @@ function makeResponsive() {
         // Create axes labels
         chartGroup.append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", 0 - margin.left - 45 + margin.top + 30)
+          .attr("y", 0 - margin.left - 45 + margin.top + 40)
           .attr("x", 0 - (height / 2.0))
           .attr("dy", "1em")
           .attr("class", "axisText")
           .text("Lacks Healthcare (%)");
     
         chartGroup.append("text")
-          .attr("transform", `translate(${width / 2.5}, ${height + margin.top + 30})`)
+          .attr("transform", `translate(${width / 2}, ${height + margin.top + 20 - margin.left + 50})`)
           .attr("class", "axisText")
           .text("In Poverty (%)");
        
